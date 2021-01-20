@@ -1,7 +1,7 @@
 from whois import whois
 import pandas as pd
 
-domains = [
+domains = [  # feel free to add more domains to the list
     "sav.com",
     "jars.com"
 ]
@@ -11,22 +11,23 @@ class GetExp:
         self.domains = domains
         self.domain_dict = dict()
 
+    # uses the whois library to get the expiration dates from the domain
     def getexp(self):
         for domain in self.domains:
             try:
-                print(domain)
+                print(f"Finding expiration date for: {domain}")
                 whois_info = whois(domain)
                 self.domain_dict[domain] = whois_info.expiration_date.strftime('%m/%d/%Y')
             except:
                 print(f"failed to find {domain} in whois lookup")
 
+    # writes the results to csv
     def writetocsv(self, writepath='domaintest.csv'):
-
         data = pd.DataFrame(list(self.domain_dict.items()),
                             columns=["Domain", "Expiration Date"])
         data.to_csv(writepath, index=False)
 
-a = GetExp(domains)
-a.getexp()
-print(a.domain_dict)
-a.writetocsv()
+if __name__ == "__main__":
+    domain_data = GetExp(domains)
+    domain_data.getexp()
+    domain_data.writetocsv()
