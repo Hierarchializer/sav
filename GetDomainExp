@@ -1,0 +1,32 @@
+from whois import whois
+import pandas as pd
+
+domains = [
+    "sav.com",
+    "jars.com"
+]
+
+class GetExp:
+    def __init__(self, domains):
+        self.domains = domains
+        self.domain_dict = dict()
+
+    def getexp(self):
+        for domain in self.domains:
+            try:
+                print(domain)
+                whois_info = whois(domain)
+                self.domain_dict[domain] = whois_info.expiration_date.strftime('%m/%d/%Y')
+            except:
+                print(f"failed to find {domain} in whois lookup")
+
+    def writetocsv(self, writepath='domaintest.csv'):
+
+        data = pd.DataFrame(list(self.domain_dict.items()),
+                            columns=["Domain", "Expiration Date"])
+        data.to_csv(writepath, index=False)
+
+a = GetExp(domains)
+a.getexp()
+print(a.domain_dict)
+a.writetocsv()
