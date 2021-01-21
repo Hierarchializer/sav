@@ -3,7 +3,9 @@ import pandas as pd
 
 domains = [  # feel free to add more domains to the list
     "sav.com",
-    "jars.com"
+    "jars.com",
+    "abc.com",
+    "adsfhbasdx.adfadsfa"
 ]
 
 class GetExp:
@@ -18,8 +20,8 @@ class GetExp:
                 print(f"Finding expiration date for: {domain}")
                 whois_info = whois(domain)
                 self.domain_dict[domain] = whois_info.expiration_date.strftime('%m/%d/%Y')
-            except:
-                print(f"failed to find {domain} in whois lookup")
+            except Exception as e:
+                print(f"failed to find {domain}\nError: {e}")
 
     # writes the results to csv
     def writetocsv(self, writepath='domaintest.csv'):
